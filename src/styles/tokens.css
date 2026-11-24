@@ -1,0 +1,64 @@
+/*
+ * Palette, stored as RGB channels so Tailwind can apply alpha.
+ * Each signature colour has: base (fills), -shade (2-tone shading),
+ * -strong (text and buttons: ≥ 4.6:1 on champagne and on its tint) and -tint (soft backgrounds).
+ * The base colours are fills and large accents only. They fail AA as text.
+ */
+:root {
+  /* Base */
+  --champagne: 246 236 220;       /* #F6ECDC background, wall */
+  --champagne-deep: 234 219 195;  /* #EADBC3 neutral helper: cards, wall panel */
+  --chestnut: 123 74 51;          /* #7B4A33 desk wood, buttons */
+  --chestnut-shade: 101 61 42;    /* #653D2A */
+  --espresso: 62 36 25;           /* #3E2419 text, outlines (12.2:1 on champagne) */
+  --blush: 242 184 176;           /* #F2B8B0 soft accents, focus ring */
+  --blush-soft: 245 220 214;      /* #F5DCD6 neutral helper: hover backgrounds */
+
+  /* Project signature colours */
+  --rose: 224 112 122;            /* #E0707A ShadeSense */
+  --rose-shade: 213 62 76;
+  --rose-strong: 177 38 51;       /* #B12633 */
+  --rose-tint: 242 211 200;
+
+  --terracotta: 210 105 60;       /* #D2693C Property Advisor */
+  --terracotta-shade: 180 83 42;
+  --terracotta-strong: 149 69 34; /* #954522 */
+  --terracotta-tint: 239 210 188;
+
+  --gold: 233 169 58;             /* #E9A93A Hotel Voice AI */
+  --gold-shade: 215 145 24;
+  --gold-strong: 134 90 15;       /* #865A0F */
+  --gold-tint: 243 223 188;
+
+  --cornflower: 79 124 172;       /* #4F7CAC QueueEase */
+  --cornflower-shade: 65 102 141;
+  --cornflower-strong: 59 93 129; /* #3B5D81 */
+  --cornflower-tint: 213 214 210;
+
+  --sage: 127 163 107;            /* #7FA36B Finance Tracker */
+  --sage-shade: 103 137 85;
+  --sage-strong: 77 102 63;       /* #4D663F */
+  --sage-tint: 222 221 197;
+
+  --teal: 46 139 139;             /* #2E8B8B Internship */
+  --teal-shade: 38 114 114;
+  --teal-strong: 33 100 100;      /* #216464 */
+  --teal-tint: 206 217 204;
+
+  /* The current accent. Defaults to chestnut; [data-accent] swaps it per object. */
+  --accent: var(--chestnut);
+  --accent-shade: var(--chestnut-shade);
+  --accent-strong: var(--chestnut);
+  --accent-tint: 221 204 186;
+
+  --ease-workbench: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: light;
+}
+
+[data-accent='rose'] { --accent: var(--rose); --accent-shade: var(--rose-shade); --accent-strong: var(--rose-strong); --accent-tint: var(--rose-tint); }
+[data-accent='terracotta'] { --accent: var(--terracotta); --accent-shade: var(--terracotta-shade); --accent-strong: var(--terracotta-strong); --accent-tint: var(--terracotta-tint); }
+[data-accent='gold'] { --accent: var(--gold); --accent-shade: var(--gold-shade); --accent-strong: var(--gold-strong); --accent-tint: var(--gold-tint); }
+[data-accent='cornflower'] { --accent: var(--cornflower); --accent-shade: var(--cornflower-shade); --accent-strong: var(--cornflower-strong); --accent-tint: var(--cornflower-tint); }
+[data-accent='sage'] { --accent: var(--sage); --accent-shade: var(--sage-shade); --accent-strong: var(--sage-strong); --accent-tint: var(--sage-tint); }
+[data-accent='teal'] { --accent: var(--teal); --accent-shade: var(--teal-shade); --accent-strong: var(--teal-strong); --accent-tint: var(--teal-tint); }
+[data-accent='chestnut'] { --accent: var(--chestnut); --accent-shade: var(--chestnut-shade); --accent-strong: var(--chestnut); --accent-tint: 221 204 186; }

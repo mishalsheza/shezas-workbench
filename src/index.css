@@ -1,0 +1,76 @@
+@import './styles/tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply bg-champagne text-espresso antialiased;
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply min-h-screen bg-champagne font-sans text-body;
+  }
+  h1, h2, h3 {
+    @apply font-display text-chestnut;
+  }
+  ::selection {
+    @apply bg-blush-soft text-espresso;
+  }
+  /* Blush focus ring everywhere. The 2px espresso inner ring carries the contrast
+     (≥ 6.5:1 on champagne, oak and linen), since blush alone vanishes on the light desk. */
+  :focus-visible {
+    outline: 3px solid rgb(var(--blush));
+    outline-offset: 3px;
+    box-shadow: 0 0 0 2px rgb(var(--espresso));
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  /* Subtle paper grain: a tiny inline SVG noise tile, fixed over the page. */
+  .grain::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.08;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.29 0 0 0 0 0.17 0 0 0 0 0.12 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  /* Tags and buttons follow the nearest [data-accent]; chestnut by default. */
+  .tag {
+    @apply inline-flex items-center rounded-full border border-accent/50 bg-accent-tint px-2.5 py-0.5 font-mono text-xs text-espresso;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-full bg-accent-strong px-5 py-2.5 text-sm font-medium text-champagne transition-colors duration-200 ease-workbench hover:bg-espresso;
+  }
+  /* Every desk illustration: one consistent espresso outline weight at any size. */
+  .art * {
+    vector-effect: non-scaling-stroke;
+  }
+  .link-quiet {
+    @apply underline decoration-chestnut/30 decoration-1 underline-offset-4 transition-colors duration-200 ease-workbench hover:decoration-blush hover:decoration-2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Print: "Just the resume" on paper ── */
+@media print {
+  @page { margin: 14mm 16mm; }
+  html, body { background: #fff !important; color: #000 !important; font-size: 10.5pt; }
+  .grain::before, .no-print { display: none !important; }
+  .resume h1, .resume h2, .resume h3, .resume p, .resume li, .resume dt, .resume dd, .resume a { color: #000 !important; }
+  .resume a { text-decoration: none !important; }
+  .break-inside-avoid { break-inside: avoid; }
+}
