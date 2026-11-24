@@ -3,12 +3,14 @@ import type { ProjectCategory } from '../../data/content'
 import { copy, projectsByCategory } from '../../data/content'
 import { caseHash } from '../../lib/caseStudies'
 import { usePanel } from '../panel/panelStore'
+import { highlightState, useSkillHighlight } from '../skills/skillHighlight'
 
 const CATEGORIES: ProjectCategory[] = ['ai', 'fullstack']
 
 /** The plain-text way in: opens the same case-study panels as the desk objects. */
 export function ProjectIndex() {
   const { open } = usePanel()
+  const { lit } = useSkillHighlight()
 
   const onClick = (hash: string) => (e: MouseEvent<HTMLAnchorElement>) => {
     // Let cmd/ctrl/shift-click open the shareable link in a new tab.
@@ -30,7 +32,13 @@ export function ProjectIndex() {
               {projectsByCategory(category).map((p) => {
                 const hash = caseHash({ kind: 'project', id: p.id })
                 return (
-                  <li key={p.id} data-accent={p.accent}>
+                  <li
+                    key={p.id}
+                    data-accent={p.accent}
+                    className={`transition-[opacity,background-color] duration-300 ease-workbench ${
+                      highlightState(lit, p.deskObject) === 'dim' ? 'opacity-35' : highlightState(lit, p.deskObject) === 'lit' ? 'bg-accent-tint/50' : ''
+                    }`}
+                  >
                     <a
                       href={hash}
                       data-desk-target={hash}

@@ -4,6 +4,8 @@ import { PanelProvider } from '../panel/PanelProvider'
 import { AboutSection } from '../about/AboutSection'
 import { Desk } from '../desk/Desk'
 import { ProjectIndex } from '../desk/ProjectIndex'
+import { Timeline } from '../experience/Timeline'
+import { SkillHighlightProvider } from '../skills/SkillHighlightProvider'
 import { SkillsSection } from '../skills/SkillsSection'
 import { ContactLinks } from './ContactLinks'
 
@@ -11,6 +13,7 @@ import { ContactLinks } from './ContactLinks'
 export function WorkbenchPage() {
   return (
     <PanelProvider>
+    <SkillHighlightProvider>
     <main>
       <Hero />
 
@@ -28,6 +31,7 @@ export function WorkbenchPage() {
       </section>
 
       <SkillsSection />
+      <Timeline />
       <AboutSection />
 
       <section id="contact" aria-labelledby="contact-heading" className="scroll-mt-20 px-4 py-24 sm:px-8">
@@ -39,6 +43,7 @@ export function WorkbenchPage() {
         </div>
       </section>
     </main>
+    </SkillHighlightProvider>
     </PanelProvider>
   )
 }

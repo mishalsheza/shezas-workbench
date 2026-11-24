@@ -1,9 +1,11 @@
 import { OBJECT_ART } from '../objects'
 import { targetHash, type DeskItem } from '../../lib/deskItems'
+import { highlightState, useSkillHighlight } from '../skills/skillHighlight'
 
 /** Mobile version of a studio object: the same drawing on a card tinted with its colour. */
 export function DeskCard({ item, onOpen }: { item: DeskItem; onOpen: (item: DeskItem, el: HTMLElement) => void }) {
   const Art = OBJECT_ART[item.id]
+  const state = highlightState(useSkillHighlight().lit, item.id)
   return (
     <button
       type="button"
@@ -11,7 +13,9 @@ export function DeskCard({ item, onOpen }: { item: DeskItem; onOpen: (item: Desk
       data-accent={item.accent}
       data-desk-target={targetHash(item.target)}
       onClick={(e) => onOpen(item, e.currentTarget)}
-      className="flex w-full items-center gap-5 rounded-2xl border-l-4 border-accent bg-accent-tint p-4 text-left shadow-object transition-colors duration-200 ease-workbench hover:bg-blush-soft"
+      className={`flex w-full items-center gap-5 rounded-2xl border-l-4 border-accent bg-accent-tint p-4 text-left shadow-object transition-[background-color,opacity,box-shadow] duration-300 ease-workbench hover:bg-blush-soft ${
+        state === 'dim' ? 'opacity-40' : state === 'lit' ? 'ring-2 ring-accent' : ''
+      }`}
     >
       <span className="flex h-24 w-28 shrink-0 items-center justify-center rounded-xl bg-champagne p-3">
         <Art className="h-full w-auto max-w-full drop-shadow-[3px_4px_3px_rgba(62,36,25,0.22)]" />

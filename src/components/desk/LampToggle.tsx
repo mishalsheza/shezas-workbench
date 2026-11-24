@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { copy } from '../../data/content'
 import { DeskLamp } from '../objects/DeskLamp'
 import { DURATION, EASE } from '../../lib/motion'
+import { useSkillHighlight } from '../skills/skillHighlight'
 import { LAMP_PLACEMENT, SCENE_H, sceneY } from './deskLayout'
 
 interface LampToggleProps {
@@ -12,6 +13,7 @@ interface LampToggleProps {
 
 /** The desk lamp: decor, but clicking it toggles a warm glow over the scene. */
 export function LampToggle({ on, onToggle, reduced }: LampToggleProps) {
+  const dim = useSkillHighlight().lit !== null
   return (
     <>
       <AnimatePresence>
@@ -39,7 +41,10 @@ export function LampToggle({ on, onToggle, reduced }: LampToggleProps) {
         className="absolute z-10 rounded-xl"
         style={{ left: `${LAMP_PLACEMENT.left}%`, bottom: `${LAMP_PLACEMENT.bottom}%`, width: `${LAMP_PLACEMENT.width}%` }}
       >
-        <DeskLamp on={on} className="block h-auto w-full drop-shadow-[3px_4px_3px_rgba(62,36,25,0.18)]" />
+        <DeskLamp
+          on={on}
+          className={`block h-auto w-full drop-shadow-[3px_4px_3px_rgba(62,36,25,0.18)] transition-opacity duration-300 ease-workbench ${dim ? 'opacity-30' : ''}`}
+        />
       </button>
     </>
   )

@@ -270,6 +270,18 @@ export interface SiteCopy {
   categoryLabels: Record<ProjectCategory, string>
   skillsHeading: string
   skillsIntro: string
+  skills: {
+    allTools: string
+    allToolsHide: string
+    usedIn: string
+    clearHint: string
+    /** Shown to screen readers on skills no project uses yet. */
+    unused: string
+  }
+  timeline: {
+    openCaseStudy: string
+    showDetails: string
+  }
   experienceHeading: string
   educationHeading: string
   aboutHeading: string
@@ -729,6 +741,17 @@ export const copy: SiteCopy = {
   categoryLabels: { ai: 'AI projects', fullstack: 'Full-stack projects' },
   skillsHeading: 'The pegboard',
   skillsIntro: 'Pick a tool to see where I have used it.',
+  skills: {
+    allTools: 'All tools',
+    allToolsHide: 'Fewer tools',
+    usedIn: 'Used in',
+    clearHint: 'Click the tool again or press Esc to clear.',
+    unused: 'not in a featured project yet',
+  },
+  timeline: {
+    openCaseStudy: 'Open case study',
+    showDetails: 'Show details',
+  },
   experienceHeading: 'Commit history',
   educationHeading: 'Education',
   aboutHeading: 'About me',

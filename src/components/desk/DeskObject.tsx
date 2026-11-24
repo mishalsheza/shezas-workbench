@@ -5,6 +5,7 @@ import { targetHash, type DeskItem } from '../../lib/deskItems'
 import { DURATION, EASE } from '../../lib/motion'
 import type { Placement } from './deskLayout'
 import { placeLabel } from './labelPlacement'
+import { highlightState, useSkillHighlight } from '../skills/skillHighlight'
 
 // Light comes from the lamp at the top-left, so shadows fall down and to the right.
 const SHADOW_REST = 'drop-shadow(3px 4px 3px rgba(62, 36, 25, 0.22))'
@@ -35,6 +36,7 @@ interface DeskObjectProps {
 /** One object in the studio: a real button that lifts, tilts and shows a tinted label. */
 export function DeskObject({ item, place, reduced, compact, onOpen }: DeskObjectProps) {
   const Art = OBJECT_ART[item.id]
+  const state = highlightState(useSkillHighlight().lit, item.id)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const labelRef = useRef<HTMLSpanElement>(null)
   const [labelPos, setLabelPos] = useState<{ left: number; top: number } | null>(null)
@@ -73,7 +75,18 @@ export function DeskObject({ item, place, reduced, compact, onOpen }: DeskObject
       className="group absolute z-10 rounded-xl hover:z-30 focus-visible:z-30"
       style={{ left: `${place.left}%`, bottom: `${place.bottom}%`, width: `${place.width}%` }}
     >
-      <motion.div variants={reduced ? liftReduced : lift} style={{ transformOrigin: '50% 100%' }}>
+      {/* Skill highlight: a soft accent halo behind objects that use the selected skill */}
+      <span
+        aria-hidden="true"
+        className={`pointer-events-none absolute -inset-2 rounded-2xl bg-accent/15 ring-2 ring-accent transition-opacity duration-300 ease-workbench ${
+          state === 'lit' ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+      <motion.div
+        variants={reduced ? liftReduced : lift}
+        style={{ transformOrigin: '50% 100%' }}
+        className={`relative transition-opacity duration-300 ease-workbench ${state === 'dim' ? 'opacity-30' : ''}`}
+      >
         <Art className="block h-auto w-full" />
       </motion.div>
 
