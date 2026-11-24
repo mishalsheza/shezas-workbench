@@ -1,6 +1,6 @@
 import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react'
-import type { MouseEvent, ReactNode, RefObject } from 'react'
-import { copy } from '../../data/content'
+import { lazy, Suspense, type MouseEvent, type ReactNode, type RefObject } from 'react'
+import { arduinoDemo, copy } from '../../data/content'
 import { neighbours, type CaseEntry } from '../../lib/caseStudies'
 import { GithubIcon } from '../layout/BrandIcons'
 import { PreviewImage } from './PreviewImage'
@@ -11,6 +11,9 @@ interface CaseStudyContentProps {
   titleRef: RefObject<HTMLHeadingElement | null>
   onNavigate: (hash: string) => void
 }
+
+// Demos load only when a panel that has one opens.
+const ArduinoDemo = lazy(() => import('../demos/ArduinoDemo'))
 
 function Block({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -84,7 +87,14 @@ export function CaseStudyContent({ entry, titleId, titleRef, onNavigate }: CaseS
           ))}
         </ul>
       </Block>
-      {/* Phase 5: the interactive demo (Blockly toy, service bell) slots in here. */}
+      {study.demo === 'blockly' && (
+        <Block title={arduinoDemo.heading}>
+          <Suspense fallback={<div className="h-[34rem] rounded-2xl bg-accent-tint/40" />}>
+            <ArduinoDemo />
+          </Suspense>
+        </Block>
+      )}
+      {/* Phase 5 (next): the service-bell demo slots in here too. */}
       <Block title={copy.panel.hardest}>
         <p className="border-l-4 border-accent pl-5 font-display text-lg leading-relaxed text-espresso">{study.hardestPart}</p>
       </Block>

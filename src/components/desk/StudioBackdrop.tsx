@@ -1,13 +1,15 @@
+import { SCENE_H, SCENE_W } from './deskLayout'
+
 /**
- * The non-interactive scene (viewBox 1600×1000, same 16:10 as the container):
- * champagne wall, shelf with books, the desk, a plant. Kept quieter than the objects.
+ * The non-interactive scene (same proportions as the container): champagne wall,
+ * shelf with books, the desk, a plant. Kept quieter than the objects.
  */
 export function StudioBackdrop() {
   return (
-    <svg viewBox="0 0 1600 1000" aria-hidden="true" focusable="false" className="art absolute inset-0 h-full w-full">
+    <svg viewBox={`0 0 ${SCENE_W} ${SCENE_H}`} aria-hidden="true" focusable="false" className="art absolute inset-0 h-full w-full">
       <g className="stroke-espresso" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round">
         {/* wall */}
-        <rect x="0" y="0" width="1600" height="1000" className="fill-champagne-deep/50" stroke="none" />
+        <rect x="0" y="0" width={SCENE_W} height={SCENE_H} className="fill-champagne-deep/50" stroke="none" />
 
         {/* shelf */}
         <path d="M540 346 L560 404 H576 L568 346 Z M1050 346 L1042 404 H1058 L1078 346 Z" className="fill-chestnut-shade" />

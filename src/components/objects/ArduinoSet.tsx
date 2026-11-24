@@ -20,12 +20,17 @@ export function ArduinoSet({ className, ledOn = false }: { className?: string; l
           </g>
         ))}
       </g>
-      {/* LED */}
-      {ledOn && <circle cx="214" cy="40" r="20" className="fill-blush/50" stroke="none" />}
+      {/* LED: a gold LED with a warm halo when lit */}
+      {ledOn && (
+        <g stroke="none">
+          <circle cx="214" cy="42" r="34" className="fill-gold/15" />
+          <circle cx="214" cy="42" r="22" className="fill-gold/40" />
+        </g>
+      )}
       <path d="M210 74 V58 M218 74 V58" strokeWidth={1.5} />
-      <path d="M206 58 V38 A8 8 0 0 1 222 38 V58 Z" className={ledOn ? 'fill-blush' : 'fill-blush/60'} />
-      <rect x="204" y="56" width="20" height="4" rx="1" className={ledOn ? 'fill-blush' : 'fill-blush/60'} />
-      <path d="M210 40 A3 3 0 0 1 213 36" fill="none" className="stroke-champagne" strokeWidth={2} />
+      <path d="M206 58 V38 A8 8 0 0 1 222 38 V58 Z" className={ledOn ? 'fill-gold' : 'fill-gold-tint'} />
+      <rect x="204" y="56" width="20" height="4" rx="1" className={ledOn ? 'fill-gold-shade' : 'fill-champagne-deep'} />
+      <path d="M210 40 A3 3 0 0 1 213 36" fill="none" className={ledOn ? 'stroke-champagne' : 'stroke-champagne/80'} strokeWidth={2} />
       {/* Arduino board */}
       <path d="M8 114 L16 50 H128 L134 114 Z" className="fill-teal" />
       <path d="M8 114 H134 L133 106 H9 Z" className="fill-teal-shade" stroke="none" />

@@ -207,6 +207,35 @@ export interface BellDemoCopy {
   transcript: TranscriptLine[]
 }
 
+export type ArduinoBlockKind = 'ledOn' | 'ledOff' | 'wait'
+
+export interface ArduinoDemoCopy {
+  heading: string
+  label: string
+  note: string
+  blocks: Record<ArduinoBlockKind, string>
+  /** Text before and after the delay picker on the wait block, e.g. "wait" … "ms". */
+  waitUnit: string
+  waitOptions: number[]
+  loop: string
+  palette: string
+  program: string
+  code: string
+  add: (block: string) => string
+  moveUp: string
+  moveDown: string
+  remove: string
+  run: string
+  stop: string
+  reset: string
+  empty: string
+  full: string
+  ledOn: string
+  ledOff: string
+  running: string
+  stopped: string
+}
+
 export interface TerminalCopy {
   prompt: string
   welcome: string[]
@@ -618,6 +647,33 @@ export const bellDemo: BellDemoCopy = {
     { speaker: 'system', text: 'set_wakeup_call(time: "07:00") ✓ saved' },
     { speaker: 'agent', text: 'Done: a wake-up call at 7 am. Anything else?' },
   ],
+}
+
+/** A tiny, offline cousin of the internship IDE: blocks in, Arduino C++ out, a drawn LED blinks. */
+export const arduinoDemo: ArduinoDemoCopy = {
+  heading: 'Try a tiny version',
+  label: 'Illustrative demo',
+  note: 'Runs in your browser: no board, no upload. The real IDE has servo, timing and control blocks too.',
+  blocks: { ledOn: 'turn LED on', ledOff: 'turn LED off', wait: 'wait' },
+  waitUnit: 'ms',
+  waitOptions: [250, 500, 1000],
+  loop: 'repeat forever',
+  palette: 'Blocks',
+  program: 'Your program',
+  code: 'Generated Arduino code',
+  add: (block) => `Add “${block}” block`,
+  moveUp: 'Move up',
+  moveDown: 'Move down',
+  remove: 'Remove',
+  run: 'Run',
+  stop: 'Stop',
+  reset: 'Reset',
+  empty: 'Add a block to get started.',
+  full: 'That’s plenty for a tiny board.',
+  ledOn: 'LED on',
+  ledOff: 'LED off',
+  running: 'Running on the board',
+  stopped: 'Stopped',
 }
 
 /* ═══════════════════════════════ Terminal ═══════════════════════════════ */

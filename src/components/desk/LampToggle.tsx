@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { copy } from '../../data/content'
 import { DeskLamp } from '../objects/DeskLamp'
 import { DURATION, EASE } from '../../lib/motion'
-import { LAMP_PLACEMENT } from './deskLayout'
+import { LAMP_PLACEMENT, SCENE_H, sceneY } from './deskLayout'
 
 interface LampToggleProps {
   on: boolean
@@ -21,7 +21,7 @@ export function LampToggle({ on, onToggle, reduced }: LampToggleProps) {
             className="pointer-events-none absolute inset-0 z-20 rounded-[inherit] mix-blend-multiply"
             style={{
               background:
-                'radial-gradient(ellipse 30% 40% at 17% 66%, rgba(233, 169, 58, 0.42) 0%, rgba(233, 169, 58, 0.16) 45%, rgba(233, 169, 58, 0) 100%)',
+                `radial-gradient(ellipse 30% ${(400 / SCENE_H) * 100}% at 17% ${sceneY(660)}%, rgba(233, 169, 58, 0.42) 0%, rgba(233, 169, 58, 0.16) 45%, rgba(233, 169, 58, 0) 100%)`,
             }}
             initial={reduced ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -35,6 +35,7 @@ export function LampToggle({ on, onToggle, reduced }: LampToggleProps) {
         aria-pressed={on}
         aria-label={copy.lamp}
         onClick={onToggle}
+        data-desk-object=""
         className="absolute z-10 rounded-xl"
         style={{ left: `${LAMP_PLACEMENT.left}%`, bottom: `${LAMP_PLACEMENT.bottom}%`, width: `${LAMP_PLACEMENT.width}%` }}
       >
