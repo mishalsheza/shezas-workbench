@@ -126,7 +126,7 @@ export interface Project extends CaseStudy {
   githubUrl: string
 }
 
-export type CommitType = 'feat' | 'fix' | 'chore' | 'docs' | 'refactor' | 'merge'
+export type CommitType = 'feat' | 'init' | 'fix' | 'chore' | 'docs' | 'refactor' | 'merge'
 
 export interface ExperienceEntry {
   id: ExperienceId | `edu-${string}`
@@ -238,10 +238,24 @@ export interface ArduinoDemoCopy {
 
 export interface TerminalCopy {
   prompt: string
+  /** Window title bar. */
+  title: string
+  inputLabel: string
   welcome: string[]
+  /** Listed by `help`. Easter eggs are deliberately left out. */
   help: [command: string, description: string][]
-  notFound: string
+  notFound: (cmd: string) => string
   coffee: string[]
+  hire: string[]
+  sudoDenied: string
+  copied: (email: string) => string
+  copyFailed: (email: string) => string
+  opening: (what: string) => string
+  projectsHint: string
+  openUsage: string
+  noSuchProject: (name: string) => string
+  resumeMode: string
+  aboutLines: string[]
 }
 
 export interface PanelCopy {
@@ -543,8 +557,8 @@ export const experience: ExperienceEntry[] = [
   {
     id: 'edu-scaler',
     hash: 'e52d9a0',
-    type: 'chore',
-    message: 'started CS at Scaler School of Technology',
+    type: 'init',
+    message: 'started the CS undergraduate program at Scaler School of Technology',
     organisation: 'Scaler School of Technology',
     role: 'Undergraduate Program in Computer Science',
     location: 'Bengaluru, India',
@@ -554,8 +568,8 @@ export const experience: ExperienceEntry[] = [
   {
     id: 'edu-bits',
     hash: '1b7d3e8',
-    type: 'chore',
-    message: 'began B.Sc. (Hons.) Computer Science at BITS Pilani',
+    type: 'init',
+    message: 'started B.Sc. (Hons.) Computer Science at BITS Pilani',
     organisation: 'BITS Pilani',
     role: 'B.Sc. (Hons.) in Computer Science',
     date: 'Aug 2023',
@@ -692,18 +706,23 @@ export const arduinoDemo: ArduinoDemoCopy = {
 
 export const terminal: TerminalCopy = {
   prompt: 'sheza@workbench ~ %',
+  title: 'sheza@workbench: ~/contact',
+  inputLabel: 'Terminal command',
   welcome: ["Welcome to Sheza's workbench.", 'Type `help` to see what I can do.'],
   help: [
     ['help', 'list available commands'],
     ['about', 'a few lines about me'],
     ['projects', 'what I have built'],
+    ['open <project>', 'open a case study, e.g. open queueease'],
+    ['skills', 'the tools I reach for'],
+    ['experience', 'git log of my career so far'],
     ['github', 'open my GitHub'],
     ['linkedin', 'open my LinkedIn'],
     ['resume', 'open my resume'],
-    ['email', 'write to me'],
+    ['email', 'copy my email address'],
     ['clear', 'clear the screen'],
   ],
-  notFound: 'command not found. Try `help`.',
+  notFound: (cmd) => `command not found: ${cmd}. Try \`help\``,
   coffee: [
     '      ( (',
     '       ) )',
@@ -712,6 +731,24 @@ export const terminal: TerminalCopy = {
     '    \\      /',
     "     `----'",
     'brewing… try again after the next commit.',
+  ],
+  hire: [
+    '[sudo] password for recruiter: ********',
+    'permission granted ✓',
+    'Sheza has been added to your shortlist. Excellent taste.',
+  ],
+  sudoDenied: 'nice try. You are not in the sudoers file. This incident will be reported (to nobody).',
+  copied: (email) => `copied ${email} to your clipboard ✓`,
+  copyFailed: (email) => `couldn’t reach the clipboard. Here it is: ${email}`,
+  opening: (what) => `opening ${what}…`,
+  projectsHint: 'Type `open <name>` to read the case study. Tab completes names.',
+  openUsage: 'usage: open <project>. Try `projects` for the list.',
+  noSuchProject: (name) => `no project called “${name}”. Try \`projects\``,
+  resumeMode: 'resume.pdf isn’t uploaded yet, so switching to “Just the resume” view…',
+  aboutLines: [
+    'CS student in Bengaluru. I build things end to end: the interface,',
+    'the API behind it, and sometimes the circuit board under it all.',
+    'Lately: AI systems that explain instead of guess. `open` any project to see.',
   ],
 }
 
@@ -772,6 +809,16 @@ export const copy: SiteCopy = {
 export const getProject = (id: string): Project | undefined => projects.find((p) => p.id === id)
 
 export const getExperience = (id: string): ExperienceEntry | undefined => experience.find((e) => e.id === id)
+
+/** Experience and education, newest first (dates look like "Jul 2025"). */
+export const experienceNewestFirst = (): ExperienceEntry[] => {
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  const when = (d: string) => {
+    const [m = '', y = '0'] = d.split(' ')
+    return Number(y) * 12 + months.indexOf(m)
+  }
+  return [...experience].sort((a, b) => when(b.date) - when(a.date))
+}
 
 export const projectsByCategory = (category: ProjectCategory): Project[] => projects.filter((p) => p.category === category)
 

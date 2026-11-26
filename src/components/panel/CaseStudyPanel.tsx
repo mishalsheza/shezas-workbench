@@ -34,16 +34,21 @@ export function CaseStudyPanel({ entry, origin, onClose, onNavigate, onClosed }:
   useFocusTrap(dialogRef, isPresent)
 
   // Make the page behind inert and stop it scrolling, while the panel is present.
+  // Focus goes back only once the panel starts leaving (not in a cleanup, which
+  // StrictMode also runs on mount and would forget who opened the panel).
   useEffect(() => {
+    if (!isPresent) {
+      onClosed()
+      return
+    }
     const root = document.getElementById('root')
-    if (!isPresent || !root) return
+    if (!root) return
     root.inert = true
     const prevOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => {
       root.inert = false
       document.body.style.overflow = prevOverflow
-      onClosed()
     }
   }, [isPresent, onClosed])
 

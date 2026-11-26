@@ -1,21 +1,13 @@
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion'
 import { ArrowUpRight, ChevronDown } from 'lucide-react'
 import { useId, useRef, useState, type MouseEvent } from 'react'
-import { copy, experience, type ExperienceEntry } from '../../data/content'
+import { copy, experienceNewestFirst, type ExperienceEntry } from '../../data/content'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { caseHash } from '../../lib/caseStudies'
 import { EASE } from '../../lib/motion'
 import { usePanel } from '../panel/panelStore'
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-/** "Jul 2025" → a sortable number. */
-const when = (d: string) => {
-  const [m = '', y = '0'] = d.split(' ')
-  return Number(y) * 12 + MONTHS.indexOf(m)
-}
-
-/** Newest first. */
-const entries = [...experience].sort((a, b) => when(b.date) - when(a.date))
+const entries = experienceNewestFirst()
 
 function Commit({ entry }: { entry: ExperienceEntry }) {
   const [open, setOpen] = useState(false)
